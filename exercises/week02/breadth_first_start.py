@@ -23,7 +23,27 @@ class Node:
 def breadth_first_search(initial_node, goal_state):
     # TODO: implementeer BFS met een queue
     # HINT: gebruik parent-tracking om het pad te reconstrueren
-    pass
+    frontier = deque([initial_node])
+
+    explored = []
+    parent = {}
+
+    while frontier:
+        current_node = frontier.pop()
+
+        if current_node.state == goal_state:
+            return current_node
+
+        else:
+            explored.append(current_node)
+            for child in current_node.actions:
+                if child not in explored and child not in frontier:
+                    frontier.append(child)
+
+    
+
+
+
 
 
 def print_path(parent, goal_node):
