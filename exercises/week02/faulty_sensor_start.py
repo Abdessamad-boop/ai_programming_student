@@ -63,14 +63,51 @@ class FaultTolerantAgent:
         - Is er geen vorige waarde (eerste meetslag)? -> kies
           bij voorkeur sensor a.
         """
-        # TODO: implementeer dit 
+        if self.verdachte_sensor ==  "a":
+            return b
+        if self.verdachte_sensor ==  "b":
+            return a
+
+        verschil = abs(a-b)
+        if verschil <= self.TOLERANCE:
+            return (a+b)/2
+        else:
+            if self.vorige_hoogte != None: #kan ook previous schrijven
+                afstand_A = abs(self.vorige_hoogte-a)
+                afstand_B = abs(self.vorige_hoogte-b)
+                if afstand_A > afstand_B:
+                    self.verdachte_sensor = "a"
+                    return b
+
+                else:
+                    self.verdachte_sensor = "b"
+                    return a
+            else:
+                self.verdachte_sensor="a"
+                return a
+
 
     def process(self, p: Reading):
         # TODO: kies de betrouwbare meting, bepaal de trend (delta t.o.v.
         #       de vorige waarde) en vraag correctie aan als de daling
         #       sneller is dan DESCENT_LIMIT. Vergeet de interne state
         #       niet bij te werken.
+
+        betrouwbare_hoogte = self.reliable_value(p.sensor_a, p.sensor_b, self.vorige_hoogte)
+
+        if self.vorige_hoogte != None:
+            daling = betrouwbare_hoogte - self.vorige_hoogte
+            if daling > self.DESCENT_LIMIT:
+                self.vorige_hoogte = betrouwbare_hoogte
+                return Nothing()
+            else:
+                self.vorige_hoogte = betrouwbare_hoogte
+                return Correct()
+        
+        self.vorige_hoogte = betrouwbare_hoogte
         return Nothing()
+
+        
 
 
 if __name__ == "__main__":

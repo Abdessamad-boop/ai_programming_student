@@ -61,7 +61,7 @@ Geef de metingen van beide sensoren terug als tuple.
 - Zijn beide sensoren het **bij benadering** eens (verschil < `TOLERANCE`)? -> gebruik het gemiddelde.
 - Lopen ze **duidelijk uiteen**? -> dan is er iets mis. Gebruik het `sensor_model`: vertrouw de sensor die **consistent** is met de vorige waarde (interne state!). Tip: het dichtste bij kun je best implementeren met `abs`, de absolute waarde functie.
 - Onthoud in de interne state welke sensor als verdacht geldt. Vanaf dan vertrouw je de andere sensor.
-
+ - 
 ### Stap 4: Beslissing
 - Als de betrouwbare hoogtemeter een dalende trend tot die niet te sterk is: `return Correct()`. Er mag maximum 10 meter gedaald worden tussen metingen.
 - Anders: `return Nothing()`. 
