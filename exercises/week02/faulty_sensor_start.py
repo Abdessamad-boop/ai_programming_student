@@ -87,6 +87,7 @@ class FaultTolerantAgent:
                 return a
 
 
+
     def process(self, p: Reading):
         # TODO: kies de betrouwbare meting, bepaal de trend (delta t.o.v.
         #       de vorige waarde) en vraag correctie aan als de daling
