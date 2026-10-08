@@ -1,8 +1,3 @@
-"""
-Oefening 2: Breadth-First Search
-=================================
-Implementeer BFS met backward printing van het pad.
-"""
 from collections import deque
 
 
@@ -21,14 +16,46 @@ class Node:
 
 
 def breadth_first_search(initial_node, goal_state):
-    # TODO: implementeer BFS met een queue
-    # HINT: gebruik parent-tracking om het pad te reconstrueren
-    pass
+    # Queue voor FIFO (First-In-First-Out) BFS traversal
+    queue = deque([initial_node])
+    
+    # Set om bij te houden welke states al bezocht zijn (vermijdt oneindige loops)
+    explored = {initial_node.state.name}
+    
+    # Dictionary voor parent-tracking om het pad te reconstrueren
+    parent = {initial_node: None}
+
+    while queue:
+        # Haal de voorste node uit de queue
+        current_node = queue.popleft()
+
+        # Check of dit het doel is
+        if current_node.state.name == goal_state.name:
+            print_path(parent, current_node)
+            return current_node
+
+        # Voeg alle onbezochte kinderen toe aan de achterkant van de queue
+        for child in current_node.actions:
+            if child.state.name not in explored:
+                explored.add(child.state.name)
+                parent[child] = current_node
+                queue.append(child)
+
+    return None
 
 
 def print_path(parent, goal_node):
-    # TODO: print het pad van start naar goal (backward printing)
-    pass
+    path = []
+    current = goal_node
+    
+    # Loop via de parent-dictionary terug van goal naar start
+    while current is not None:
+        path.append(current.state.name)
+        current = parent.get(current)
+    
+    # Draai de lijst om zodat hij van start naar goal leest
+    path.reverse()
+    print("Gevonden pad:", " -> ".join(path))
 
 
 if __name__ == "__main__":
