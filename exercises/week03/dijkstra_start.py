@@ -78,29 +78,28 @@ class Path:
 
 
 def dijkstra(problem):
-    # TODO: implementeer Dijkstra met een priority queue (heapq)
     start_node = problem.InitialState
     goal_node = problem.GoalState
-
+    
     initial_path = Path(start_node)
-
+    
+    counter = 0 
     queue = []
-    heapq.heappush(queue, (0, start_node, initial_path))
+    heapq.heappush(queue, (0, counter, start_node, initial_path))
     
     visited_costs = {start_node.State.Name: 0}
-
-
+    
     while queue:
-        current_cost, current_node, current_path = heapq.heappop(queue)
-
+        current_cost, _, current_node, current_path = heapq.heappop(queue)
+        
         if current_node == goal_node:
             return current_path
-
+            
         for edge in current_node.Actions:
             new_node = edge.ToNode
-            new_cost = current_cost + edge.cost
-
-            if new_node.State.Name not in visited_costs or new_cost < visited_costs[neighbor.State.Name]:
+            new_cost = current_cost + edge.Cost
+            
+            if new_node.State.Name not in visited_costs or new_cost < visited_costs[new_node.State.Name]:
                 visited_costs[new_node.State.Name] = new_cost
                 
                 new_path = Path(start_node)
@@ -109,10 +108,11 @@ def dijkstra(problem):
                 new_path.LeafNode = new_node
                 new_path.Cost = new_cost
                 
-                
-                heapq.heappush(queue, (new_cost, new_node, new_path))
+                counter += 1
+                heapq.heappush(queue, (new_cost, counter, new_node, new_path))
                 
     return None
+
 
 
 
